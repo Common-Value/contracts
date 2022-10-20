@@ -1,0 +1,58 @@
+{
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/.cache": true,
+    "**/.vs/": true,
+    "**/*.cs": true,
+    "**/*.orig": true,
+    "**/bin/": true,
+    "**/build/": false,
+    "**/build/**/*": false,
+    "**/debug/": true,
+    "**/dist/": false,
+    "**/node_modules/": false,
+    "**/obj": true,
+    "yarn-error.log": true,
+    "**/yarn-error.log": true,
+    "**/.yalc": true
+  },
+  "search.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/.cache": true,
+    "**/.vs/": true,
+    "**/*.cs": true,
+    "**/*.orig": true,
+    "**/bin/": true,
+    "**/build/": true,
+    "**/build/**/*": true,
+    "**/debug/": true,
+    "**/dist/": true,
+    "**/obj": true,
+    "node_modules": true,
+    "node_modules/*/**": true,
+    "**/node_modules": true,
+    "yarn-error.log": true,
+    "**/yarn-error.log": true,
+    "**/.yalc": true,
+    "**/.yarn": true
+  },
+  "explorerExclude.backup": null,
+  "eslint.workingDirectories": [],
+  "solidity.packageDefaultDependenciesDirectory": "/node_modules",
+  "editor.formatOnSave": true,
+  "solidity.formatter": "prettier", // This is the default so it might be missing.
+  "[solidity]": {
+    "editor.defaultFormatter": "JuanBlanco.solidity"
+  },
+  "solidity.defaultCompiler": "localNodeModule"
+}

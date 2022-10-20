@@ -1,0 +1,22 @@
+[
+    {
+        "shares": [
+            "0.4",
+            "0.6"
+        ],
+        "fundsPerFunderEth": [
+            1,
+            2
+        ]
+    },
+    {
+        "shares": [
+            "0.1",
+            "0.9"
+        ],
+        "fundsPerFunderEth": [
+            3,
+            2
+        ]
+    }
+]
