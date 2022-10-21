@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@atixlabs/hardhat-time-n-mine": "^0.0.5",
-    "@commonvalue/core": "^0.0.0",
+    "@commonvalue/core": "^0.0.2",
     "@defi-wonderland/smock": "^2.0.7",
     "@eth-optimism/hardhat-ovm": "^0.2.4",
     "@ethereum-waffle/ens": "^3.3.1",
