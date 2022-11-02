@@ -1,3 +1,6 @@
 /node_modules
 .env
 *.secret
+generated/artifacts/build-info
+generated/**/*.dbg.json
+generated/cache
