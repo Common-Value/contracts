@@ -10,7 +10,7 @@ import "./Campaign.sol";
 contract CampaignFactory {
     Campaign private master;
 
-    event CampaignCreated(address creator, address newCampaign, bytes32 _strategyUri, address _admin, address _oracle, uint256 activationTime, bytes32 salt);
+    event CampaignCreated(address creator, address newCampaign, bytes32 _rulesetUri, address _admin, address _oracle, uint256 activationTime, bytes32 salt);
 
     constructor(address payable _master) {
         master = Campaign(_master);
@@ -21,7 +21,7 @@ contract CampaignFactory {
     }
 
     function createCampaign(
-        bytes32 _rewardRulesetUri,
+        bytes32 _rulesetUri,
         address _admin,
         address _oracle,
         uint256 _activationTime,
@@ -31,17 +31,17 @@ contract CampaignFactory {
         bytes32 salt
     ) external returns (address payable proxy) {
         proxy = payable(Clones.cloneDeterministic(address(master), salt));
-        Campaign(proxy).initCampaign(_rewardRulesetUri, _admin, _oracle, _activationTime, _CHALLENGE_PERIOD, _ACTIVATION_PERIOD, _ACTIVE_DURATION);
+        Campaign(proxy).initCampaign(_rulesetUri, _admin, _oracle, _activationTime, _CHALLENGE_PERIOD, _ACTIVATION_PERIOD, _ACTIVE_DURATION);
 
-        emit CampaignCreated(msg.sender, proxy, _rewardRulesetUri, _admin, _oracle, _activationTime, salt);
+        emit CampaignCreated(msg.sender, proxy, _rulesetUri, _admin, _oracle, _activationTime, salt);
 
         return proxy;
     }
 
     function createAndPublishCampaign(
         bytes32 _rewardRulesetUri,
+        bytes32 _merkleRoot,
         bytes32 _sharesUri,
-        bytes32 _strategyUri,
         address _admin,
         address _oracle,
         uint256 _activationTime,
@@ -51,7 +51,7 @@ contract CampaignFactory {
         bytes32 salt
     ) external {
         address payable proxy = this.createCampaign(
-            _strategyUri,
+            _rewardRulesetUri,
             _admin,
             _oracle,
             _activationTime,
@@ -60,6 +60,6 @@ contract CampaignFactory {
             _ACTIVE_DURATION,
             salt
         );
-        Campaign(proxy).proposeShares(_rewardRulesetUri, _sharesUri);
+        Campaign(proxy).proposeShares(_merkleRoot, _sharesUri);
     }
 }
