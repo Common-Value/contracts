@@ -58,6 +58,7 @@ contract Campaign is Initializable, ReentrancyGuard {
     event Withdraw(address indexed account, uint256 amount, address asset);
     event SharesLock(bool locked);
     event CampaignCancelled();
+    event AdminTransfer();
 
     error InvalidProof();
     error ProposeWindowNotActive(uint256 blockTime);
@@ -204,6 +205,11 @@ contract Campaign is Initializable, ReentrancyGuard {
         } else {
             revert WithdrawalNotAllowed();
         }
+    }
+
+    function transferAdminRole(address newAdmin) external onlyAdmin {
+        admin = newAdmin;
+        emit AdminTransfer();
     }
 
     receive() external payable notCancelled {
