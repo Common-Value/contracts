@@ -53,6 +53,7 @@ export interface CampaignInterface extends utils.Interface {
     "totalClaimed(address)": FunctionFragment;
     "totalProvided(address)": FunctionFragment;
     "totalReceived(address)": FunctionFragment;
+    "transferAdminRole(address)": FunctionFragment;
     "verifyShares(address,uint256,bytes32[])": FunctionFragment;
     "withdrawAssets(address,address)": FunctionFragment;
   };
@@ -185,6 +186,10 @@ export interface CampaignInterface extends utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
+    functionFragment: "transferAdminRole",
+    values: [string]
+  ): string;
+  encodeFunctionData(
     functionFragment: "verifyShares",
     values: [string, BigNumberish, BytesLike[]]
   ): string;
@@ -298,6 +303,10 @@ export interface CampaignInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "transferAdminRole",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "verifyShares",
     data: BytesLike
   ): Result;
@@ -307,6 +316,7 @@ export interface CampaignInterface extends utils.Interface {
   ): Result;
 
   events: {
+    "AdminTransfer()": EventFragment;
     "CampaignCancelled()": EventFragment;
     "Challenge()": EventFragment;
     "Claim(address,uint256,uint256,address)": EventFragment;
@@ -317,6 +327,7 @@ export interface CampaignInterface extends utils.Interface {
     "Withdraw(address,uint256,address)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "AdminTransfer"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "CampaignCancelled"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Challenge"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Claim"): EventFragment;
@@ -326,6 +337,10 @@ export interface CampaignInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "SharesMerkleRootUpdate"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Withdraw"): EventFragment;
 }
+
+export type AdminTransferEvent = TypedEvent<[], {}>;
+
+export type AdminTransferEventFilter = TypedEventFilter<AdminTransferEvent>;
 
 export type CampaignCancelledEvent = TypedEvent<[], {}>;
 
@@ -522,6 +537,11 @@ export interface Campaign extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { total: BigNumber }>;
 
+    transferAdminRole(
+      newAdmin: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     verifyShares(
       account: string,
       share: BigNumberish,
@@ -644,6 +664,11 @@ export interface Campaign extends BaseContract {
 
   totalReceived(asset: string, overrides?: CallOverrides): Promise<BigNumber>;
 
+  transferAdminRole(
+    newAdmin: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   verifyShares(
     account: string,
     share: BigNumberish,
@@ -762,6 +787,11 @@ export interface Campaign extends BaseContract {
 
     totalReceived(asset: string, overrides?: CallOverrides): Promise<BigNumber>;
 
+    transferAdminRole(
+      newAdmin: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     verifyShares(
       account: string,
       share: BigNumberish,
@@ -777,6 +807,9 @@ export interface Campaign extends BaseContract {
   };
 
   filters: {
+    "AdminTransfer()"(): AdminTransferEventFilter;
+    AdminTransfer(): AdminTransferEventFilter;
+
     "CampaignCancelled()"(): CampaignCancelledEventFilter;
     CampaignCancelled(): CampaignCancelledEventFilter;
 
@@ -948,6 +981,11 @@ export interface Campaign extends BaseContract {
 
     totalReceived(asset: string, overrides?: CallOverrides): Promise<BigNumber>;
 
+    transferAdminRole(
+      newAdmin: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     verifyShares(
       account: string,
       share: BigNumberish,
@@ -1087,6 +1125,11 @@ export interface Campaign extends BaseContract {
     totalReceived(
       asset: string,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    transferAdminRole(
+      newAdmin: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     verifyShares(

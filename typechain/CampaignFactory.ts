@@ -83,7 +83,7 @@ export type CampaignCreatedEvent = TypedEvent<
   {
     creator: string;
     newCampaign: string;
-    _strategyUri: string;
+    _rulesetUri: string;
     _admin: string;
     _oracle: string;
     activationTime: BigNumber;
@@ -128,8 +128,8 @@ export interface CampaignFactory extends BaseContract {
 
     createAndPublishCampaign(
       _rewardRulesetUri: BytesLike,
+      _merkleRoot: BytesLike,
       _sharesUri: BytesLike,
-      _strategyUri: BytesLike,
       _admin: string,
       _oracle: string,
       _activationTime: BigNumberish,
@@ -141,7 +141,7 @@ export interface CampaignFactory extends BaseContract {
     ): Promise<ContractTransaction>;
 
     createCampaign(
-      _rewardRulesetUri: BytesLike,
+      _rulesetUri: BytesLike,
       _admin: string,
       _oracle: string,
       _activationTime: BigNumberish,
@@ -157,8 +157,8 @@ export interface CampaignFactory extends BaseContract {
 
   createAndPublishCampaign(
     _rewardRulesetUri: BytesLike,
+    _merkleRoot: BytesLike,
     _sharesUri: BytesLike,
-    _strategyUri: BytesLike,
     _admin: string,
     _oracle: string,
     _activationTime: BigNumberish,
@@ -170,7 +170,7 @@ export interface CampaignFactory extends BaseContract {
   ): Promise<ContractTransaction>;
 
   createCampaign(
-    _rewardRulesetUri: BytesLike,
+    _rulesetUri: BytesLike,
     _admin: string,
     _oracle: string,
     _activationTime: BigNumberish,
@@ -189,8 +189,8 @@ export interface CampaignFactory extends BaseContract {
 
     createAndPublishCampaign(
       _rewardRulesetUri: BytesLike,
+      _merkleRoot: BytesLike,
       _sharesUri: BytesLike,
-      _strategyUri: BytesLike,
       _admin: string,
       _oracle: string,
       _activationTime: BigNumberish,
@@ -202,7 +202,7 @@ export interface CampaignFactory extends BaseContract {
     ): Promise<void>;
 
     createCampaign(
-      _rewardRulesetUri: BytesLike,
+      _rulesetUri: BytesLike,
       _admin: string,
       _oracle: string,
       _activationTime: BigNumberish,
@@ -218,7 +218,7 @@ export interface CampaignFactory extends BaseContract {
     "CampaignCreated(address,address,bytes32,address,address,uint256,bytes32)"(
       creator?: null,
       newCampaign?: null,
-      _strategyUri?: null,
+      _rulesetUri?: null,
       _admin?: null,
       _oracle?: null,
       activationTime?: null,
@@ -227,7 +227,7 @@ export interface CampaignFactory extends BaseContract {
     CampaignCreated(
       creator?: null,
       newCampaign?: null,
-      _strategyUri?: null,
+      _rulesetUri?: null,
       _admin?: null,
       _oracle?: null,
       activationTime?: null,
@@ -243,8 +243,8 @@ export interface CampaignFactory extends BaseContract {
 
     createAndPublishCampaign(
       _rewardRulesetUri: BytesLike,
+      _merkleRoot: BytesLike,
       _sharesUri: BytesLike,
-      _strategyUri: BytesLike,
       _admin: string,
       _oracle: string,
       _activationTime: BigNumberish,
@@ -256,7 +256,7 @@ export interface CampaignFactory extends BaseContract {
     ): Promise<BigNumber>;
 
     createCampaign(
-      _rewardRulesetUri: BytesLike,
+      _rulesetUri: BytesLike,
       _admin: string,
       _oracle: string,
       _activationTime: BigNumberish,
@@ -276,8 +276,8 @@ export interface CampaignFactory extends BaseContract {
 
     createAndPublishCampaign(
       _rewardRulesetUri: BytesLike,
+      _merkleRoot: BytesLike,
       _sharesUri: BytesLike,
-      _strategyUri: BytesLike,
       _admin: string,
       _oracle: string,
       _activationTime: BigNumberish,
@@ -289,7 +289,7 @@ export interface CampaignFactory extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     createCampaign(
-      _rewardRulesetUri: BytesLike,
+      _rulesetUri: BytesLike,
       _admin: string,
       _oracle: string,
       _activationTime: BigNumberish,
