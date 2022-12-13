@@ -4,3 +4,4 @@
 generated/artifacts/build-info
 generated/**/*.dbg.json
 generated/cache
+generated/deployments/localhost
