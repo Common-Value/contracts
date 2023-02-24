@@ -368,7 +368,13 @@
               "type": "function"
             },
             {
-              "inputs": [],
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "blockTimestamp",
+                  "type": "uint256"
+                }
+              ],
               "name": "checkMerkleRootUpdateAllowed",
               "outputs": [],
               "stateMutability": "view",
@@ -463,7 +469,13 @@
               "type": "function"
             },
             {
-              "inputs": [],
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "blockTimestamp",
+                  "type": "uint256"
+                }
+              ],
               "name": "getValidRoot",
               "outputs": [
                 {
@@ -519,7 +531,13 @@
               "type": "function"
             },
             {
-              "inputs": [],
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "blockTimestamp",
+                  "type": "uint256"
+                }
+              ],
               "name": "isChallengePeriod",
               "outputs": [
                 {
@@ -532,7 +550,13 @@
               "type": "function"
             },
             {
-              "inputs": [],
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "blockTimestamp",
+                  "type": "uint256"
+                }
+              ],
               "name": "isPendingActive",
               "outputs": [
                 {
@@ -545,7 +569,13 @@
               "type": "function"
             },
             {
-              "inputs": [],
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "blockTimestamp",
+                  "type": "uint256"
+                }
+              ],
               "name": "isProposeWindowActive",
               "outputs": [
                 {
@@ -779,6 +809,11 @@
                   "internalType": "bytes32[]",
                   "name": "proof",
                   "type": "bytes32[]"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "blockTimestamp",
+                  "type": "uint256"
                 }
               ],
               "name": "verifyShares",

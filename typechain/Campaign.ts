@@ -32,16 +32,16 @@ export interface CampaignInterface extends utils.Interface {
     "campaignCancelled()": FunctionFragment;
     "cancelCampaign()": FunctionFragment;
     "challenge()": FunctionFragment;
-    "checkMerkleRootUpdateAllowed()": FunctionFragment;
+    "checkMerkleRootUpdateAllowed(uint256)": FunctionFragment;
     "claim(address,uint256,bytes32[],address[],address)": FunctionFragment;
     "claimed(address,address)": FunctionFragment;
     "deployTime()": FunctionFragment;
     "fund(address,uint256)": FunctionFragment;
-    "getValidRoot()": FunctionFragment;
+    "getValidRoot(uint256)": FunctionFragment;
     "initCampaign(bytes32,address,address,uint256,uint256,uint256,uint256)": FunctionFragment;
-    "isChallengePeriod()": FunctionFragment;
-    "isPendingActive()": FunctionFragment;
-    "isProposeWindowActive()": FunctionFragment;
+    "isChallengePeriod(uint256)": FunctionFragment;
+    "isPendingActive(uint256)": FunctionFragment;
+    "isProposeWindowActive(uint256)": FunctionFragment;
     "oracle()": FunctionFragment;
     "pendingMerkleRoot()": FunctionFragment;
     "proposeShares(bytes32,bytes32)": FunctionFragment;
@@ -54,7 +54,7 @@ export interface CampaignInterface extends utils.Interface {
     "totalProvided(address)": FunctionFragment;
     "totalReceived(address)": FunctionFragment;
     "transferAdminRole(address)": FunctionFragment;
-    "verifyShares(address,uint256,bytes32[])": FunctionFragment;
+    "verifyShares(address,uint256,bytes32[],uint256)": FunctionFragment;
     "withdrawAssets(address,address)": FunctionFragment;
   };
 
@@ -98,7 +98,7 @@ export interface CampaignInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "challenge", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "checkMerkleRootUpdateAllowed",
-    values?: undefined
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "claim",
@@ -118,7 +118,7 @@ export interface CampaignInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getValidRoot",
-    values?: undefined
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "initCampaign",
@@ -134,15 +134,15 @@ export interface CampaignInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "isChallengePeriod",
-    values?: undefined
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "isPendingActive",
-    values?: undefined
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "isProposeWindowActive",
-    values?: undefined
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "oracle", values?: undefined): string;
   encodeFunctionData(
@@ -191,7 +191,7 @@ export interface CampaignInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "verifyShares",
-    values: [string, BigNumberish, BytesLike[]]
+    values: [string, BigNumberish, BytesLike[], BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawAssets",
@@ -445,7 +445,10 @@ export interface Campaign extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    checkMerkleRootUpdateAllowed(overrides?: CallOverrides): Promise<[void]>;
+    checkMerkleRootUpdateAllowed(
+      blockTimestamp: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
 
     claim(
       account: string,
@@ -471,6 +474,7 @@ export interface Campaign extends BaseContract {
     ): Promise<ContractTransaction>;
 
     getValidRoot(
+      blockTimestamp: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string] & { root: string }>;
 
@@ -485,13 +489,20 @@ export interface Campaign extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    isChallengePeriod(overrides?: CallOverrides): Promise<[boolean]>;
+    isChallengePeriod(
+      blockTimestamp: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     isPendingActive(
+      blockTimestamp: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[boolean] & { isActive: boolean }>;
 
-    isProposeWindowActive(overrides?: CallOverrides): Promise<[boolean]>;
+    isProposeWindowActive(
+      blockTimestamp: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     oracle(overrides?: CallOverrides): Promise<[string]>;
 
@@ -546,6 +557,7 @@ export interface Campaign extends BaseContract {
       account: string,
       share: BigNumberish,
       proof: BytesLike[],
+      blockTimestamp: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[void]>;
 
@@ -582,7 +594,10 @@ export interface Campaign extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  checkMerkleRootUpdateAllowed(overrides?: CallOverrides): Promise<void>;
+  checkMerkleRootUpdateAllowed(
+    blockTimestamp: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<void>;
 
   claim(
     account: string,
@@ -607,7 +622,10 @@ export interface Campaign extends BaseContract {
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  getValidRoot(overrides?: CallOverrides): Promise<string>;
+  getValidRoot(
+    blockTimestamp: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   initCampaign(
     _rewardRulesetUri: BytesLike,
@@ -620,11 +638,20 @@ export interface Campaign extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  isChallengePeriod(overrides?: CallOverrides): Promise<boolean>;
+  isChallengePeriod(
+    blockTimestamp: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
-  isPendingActive(overrides?: CallOverrides): Promise<boolean>;
+  isPendingActive(
+    blockTimestamp: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
-  isProposeWindowActive(overrides?: CallOverrides): Promise<boolean>;
+  isProposeWindowActive(
+    blockTimestamp: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   oracle(overrides?: CallOverrides): Promise<string>;
 
@@ -673,6 +700,7 @@ export interface Campaign extends BaseContract {
     account: string,
     share: BigNumberish,
     proof: BytesLike[],
+    blockTimestamp: BigNumberish,
     overrides?: CallOverrides
   ): Promise<void>;
 
@@ -708,7 +736,10 @@ export interface Campaign extends BaseContract {
 
     challenge(overrides?: CallOverrides): Promise<void>;
 
-    checkMerkleRootUpdateAllowed(overrides?: CallOverrides): Promise<void>;
+    checkMerkleRootUpdateAllowed(
+      blockTimestamp: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     claim(
       account: string,
@@ -733,7 +764,10 @@ export interface Campaign extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    getValidRoot(overrides?: CallOverrides): Promise<string>;
+    getValidRoot(
+      blockTimestamp: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     initCampaign(
       _rewardRulesetUri: BytesLike,
@@ -746,11 +780,20 @@ export interface Campaign extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    isChallengePeriod(overrides?: CallOverrides): Promise<boolean>;
+    isChallengePeriod(
+      blockTimestamp: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
-    isPendingActive(overrides?: CallOverrides): Promise<boolean>;
+    isPendingActive(
+      blockTimestamp: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
-    isProposeWindowActive(overrides?: CallOverrides): Promise<boolean>;
+    isProposeWindowActive(
+      blockTimestamp: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     oracle(overrides?: CallOverrides): Promise<string>;
 
@@ -796,6 +839,7 @@ export interface Campaign extends BaseContract {
       account: string,
       share: BigNumberish,
       proof: BytesLike[],
+      blockTimestamp: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -899,7 +943,10 @@ export interface Campaign extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    checkMerkleRootUpdateAllowed(overrides?: CallOverrides): Promise<BigNumber>;
+    checkMerkleRootUpdateAllowed(
+      blockTimestamp: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     claim(
       account: string,
@@ -924,7 +971,10 @@ export interface Campaign extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    getValidRoot(overrides?: CallOverrides): Promise<BigNumber>;
+    getValidRoot(
+      blockTimestamp: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     initCampaign(
       _rewardRulesetUri: BytesLike,
@@ -937,11 +987,20 @@ export interface Campaign extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    isChallengePeriod(overrides?: CallOverrides): Promise<BigNumber>;
+    isChallengePeriod(
+      blockTimestamp: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
-    isPendingActive(overrides?: CallOverrides): Promise<BigNumber>;
+    isPendingActive(
+      blockTimestamp: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
-    isProposeWindowActive(overrides?: CallOverrides): Promise<BigNumber>;
+    isProposeWindowActive(
+      blockTimestamp: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     oracle(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -990,6 +1049,7 @@ export interface Campaign extends BaseContract {
       account: string,
       share: BigNumberish,
       proof: BytesLike[],
+      blockTimestamp: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1033,6 +1093,7 @@ export interface Campaign extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     checkMerkleRootUpdateAllowed(
+      blockTimestamp: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1059,7 +1120,10 @@ export interface Campaign extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    getValidRoot(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    getValidRoot(
+      blockTimestamp: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     initCampaign(
       _rewardRulesetUri: BytesLike,
@@ -1072,11 +1136,18 @@ export interface Campaign extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    isChallengePeriod(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    isChallengePeriod(
+      blockTimestamp: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
-    isPendingActive(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    isPendingActive(
+      blockTimestamp: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     isProposeWindowActive(
+      blockTimestamp: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1136,6 +1207,7 @@ export interface Campaign extends BaseContract {
       account: string,
       share: BigNumberish,
       proof: BytesLike[],
+      blockTimestamp: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

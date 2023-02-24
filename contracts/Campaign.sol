@@ -142,7 +142,7 @@ contract Campaign is Initializable, ReentrancyGuard {
     /** Only the oracle can propose a new merkleRoot. The proposed root becomes active only
      * after a CHALLENGE_PERIOD */
     function proposeShares(bytes32 _sharesMerkleRoot, bytes32 _sharesUri) external onlyOracle notLocked notCancelled {
-        checkMerkleRootUpdateAllowed();
+        checkMerkleRootUpdateAllowed(block.timestamp);
 
         approvedMerkleRoot = pendingMerkleRoot;
         pendingMerkleRoot = _sharesMerkleRoot;
@@ -159,7 +159,7 @@ contract Campaign is Initializable, ReentrancyGuard {
         address[] calldata assets,
         address target
     ) external nonReentrant notCancelled {
-        verifyShares(account, share, proof);
+        verifyShares(account, share, proof, block.timestamp);
 
         for (uint8 ix = 0; ix < assets.length; ix++) {
             _claim(account, share, assets[ix], msg.sender, target);
@@ -169,7 +169,7 @@ contract Campaign is Initializable, ReentrancyGuard {
     /** Admin can cancel the pending merkle root while in challenge period.
      * Previously approved root will stay active */
     function challenge() external onlyAdmin {
-        if (!isChallengePeriod()) {
+        if (!isChallengePeriod(block.timestamp)) {
             revert OnlyInChallengePeriod(block.timestamp);
         }
 
@@ -230,9 +230,10 @@ contract Campaign is Initializable, ReentrancyGuard {
     function verifyShares(
         address account,
         uint256 share,
-        bytes32[] calldata proof
+        bytes32[] calldata proof,
+        uint256 blockTimestamp
     ) public view {
-        bytes32 claimingMerkleRoot = getValidRoot();
+        bytes32 claimingMerkleRoot = getValidRoot(blockTimestamp);
 
         bytes32 leaf = keccak256(abi.encodePacked(account, share));
         if (MerkleProof.verify(proof, claimingMerkleRoot, leaf) == false) {
@@ -251,13 +252,13 @@ contract Campaign is Initializable, ReentrancyGuard {
     }
 
     /** Returns true if the active root is the pending one */
-    function isPendingActive() public view returns (bool isActive) {
-        return pendingMerkleRoot != bytes32(0) && block.timestamp > activationTime;
+    function isPendingActive(uint256 blockTimestamp) public view returns (bool isActive) {
+        return pendingMerkleRoot != bytes32(0) && blockTimestamp > activationTime;
     }
 
     /** Valid root is either the approved or pending one depending on the activation time */
-    function getValidRoot() public view returns (bytes32 root) {
-        return isPendingActive() ? pendingMerkleRoot : approvedMerkleRoot;
+    function getValidRoot(uint256 blockTimestamp) public view returns (bytes32 root) {
+        return isPendingActive(blockTimestamp) ? pendingMerkleRoot : approvedMerkleRoot;
     }
 
     /** Total assets received by the contract.
@@ -267,23 +268,23 @@ contract Campaign is Initializable, ReentrancyGuard {
     }
 
     /** Indicates whether the campaign is currently at a challenge period */
-    function isChallengePeriod() public view returns (bool) {
-        return block.timestamp < activationTime;
+    function isChallengePeriod(uint256 blockTimestamp) public view returns (bool) {
+        return blockTimestamp < activationTime;
     }
 
     /** Returns true if propose window for the oracle is active */
-    function isProposeWindowActive() public view returns (bool) {
-        return (uint256(block.timestamp) - uint256(deployTime)) % ACTIVATION_PERIOD < ACTIVE_DURATION;
+    function isProposeWindowActive(uint256 blockTimestamp) public view returns (bool) {
+        return ((blockTimestamp - deployTime) % ACTIVATION_PERIOD) < ACTIVE_DURATION;
     }
 
     /** Returns true if the oracle can propose a new merkle root */
-    function checkMerkleRootUpdateAllowed() public view {
-        if (isChallengePeriod()) {
-            revert ChallengePeriodActive(block.timestamp);
+    function checkMerkleRootUpdateAllowed(uint256 blockTimestamp) public view {
+        if (isChallengePeriod(blockTimestamp)) {
+            revert ChallengePeriodActive(blockTimestamp);
         }
 
-        if (!isProposeWindowActive()) {
-            revert ProposeWindowNotActive(block.timestamp);
+        if (!isProposeWindowActive(blockTimestamp)) {
+            revert ProposeWindowNotActive(blockTimestamp);
         }
     }
 
